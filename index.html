@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -15,11 +15,12 @@
 </head>
 
 <body>
+    <a href="#contenido-principal" class="visually-hidden-focusable skip-link">Ir al contenido principal</a>
     <header class="fixed-top">
         <nav class="navbar navbar-expand-lg navbar-dark site-navbar shadow-sm">
             <div class="container-fluid">
-                <a class="navbar-brand d-flex align-items-center" href="#inicio">
-                    <img src="assets/logo.png" alt="" class="brand-logo">
+                <a class="navbar-brand d-flex align-items-center" href="#inicio" aria-label="Vector Videogames - Inicio">
+                    <img src="assets/logo.png" alt="" class="brand-logo" role="presentation">
                     Vector
                 </a>
                 <div class="d-flex align-items-center header-actions order-lg-last">
@@ -67,28 +68,49 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#ofertas">Ofertas</a>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Categorías
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark">
+                                <li><a class="dropdown-item" href="#productos">Acción</a></li>
+                                <li><a class="dropdown-item" href="#productos">RPG</a></li>
+                                <li><a class="dropdown-item" href="#productos">Aventura</a></li>
+                                <li><a class="dropdown-item" href="#productos">Deportes</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#productos">Ver todas</a></li>
+                            </ul>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#productos">Productos</a>
                         </li>
                     </ul>
+                    <form class="d-flex search-form" role="search" aria-label="Buscar productos">
+                        <div class="input-group">
+                            <input class="form-control search-input" type="search" placeholder="Buscar juegos..." aria-label="Buscar">
+                            <button class="btn search-btn" type="submit" aria-label="Buscar">
+                                <i class="bi bi-search" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </nav>
     </header>
-    <main>
+    <main id="contenido-principal" tabindex="-1">
         <section id="inicio" aria-label="hero">
             <div id="carouselExampleIndicators" class="carousel slide hero-carousel">
                 <div class="carousel-indicators"></div>
                 <div class="carousel-inner"></div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-                    data-bs-slide="prev">
+                    data-bs-slide="prev" aria-label="Anterior diapositiva">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
+                    <span class="visually-hidden">Anterior</span>
                 </button>
                 <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-                    data-bs-slide="next">
+                    data-bs-slide="next" aria-label="Siguiente diapositiva">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
+                    <span class="visually-hidden">Siguiente</span>
                 </button>
             </div>
         </section>
@@ -101,6 +123,7 @@
         <section id="productos" class="products section" aria-labelledby="products-heading">
             <div class="container-fluid">
                 <h2 id="products-heading" class="h4 section-title">Productos</h2>
+                <p class="search-results" hidden></p>
                 <div class="row row-cols-2 row-cols-lg-4 row-cols-xxl-5 products-grid"></div>
                 <nav class="products-pagination" aria-label="Paginación de productos">
                     <ul class="pagination justify-content-center"></ul>
@@ -111,11 +134,11 @@
     <footer class="site-footer">
         <div class="container-fluid">
             <div class="footer-row d-flex flex-column flex-md-row align-items-center justify-content-between">
-                <a class="footer-brand d-flex align-items-center text-white text-decoration-none fw-semibold" href="#inicio">
-                    <img src="assets/logo.png" alt="" class="brand-logo">
+                <a class="footer-brand d-flex align-items-center text-white text-decoration-none fw-semibold" href="#inicio" aria-label="Vector Videogames - Inicio">
+                    <img src="assets/logo.png" alt="" class="brand-logo" role="presentation">
                     Vector
                 </a>
-                <ul class="nav">
+                <ul class="nav footer-nav">
                     <li class="nav-item">
                         <a class="nav-link text-white-50" href="#inicio">Inicio</a>
                     </li>
@@ -126,7 +149,28 @@
                         <a class="nav-link text-white-50" href="#productos">Productos</a>
                     </li>
                 </ul>
-                <p class="small text-white-50">© 2026 Vector Videogames</p>
+            </div>
+            <hr class="footer-divider">
+            <div class="footer-bottom d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
+                <div class="footer-contact text-center text-md-start">
+                    <p class="small text-white-50 mb-1"><i class="bi bi-geo-alt-fill me-1" aria-hidden="true"></i> Av. Gamer 123, Santiago, Chile</p>
+                    <p class="small text-white-50 mb-0"><i class="bi bi-envelope-fill me-1" aria-hidden="true"></i> contacto@vectorvg.cl</p>
+                </div>
+                <div class="footer-social d-flex gap-2">
+                    <a href="#" class="social-link" aria-label="Facebook">
+                        <i class="bi bi-facebook" aria-hidden="true"></i>
+                    </a>
+                    <a href="#" class="social-link" aria-label="Instagram">
+                        <i class="bi bi-instagram" aria-hidden="true"></i>
+                    </a>
+                    <a href="#" class="social-link" aria-label="Twitter / X">
+                        <i class="bi bi-twitter-x" aria-hidden="true"></i>
+                    </a>
+                    <a href="#" class="social-link" aria-label="YouTube">
+                        <i class="bi bi-youtube" aria-hidden="true"></i>
+                    </a>
+                </div>
+                <p class="small text-white-50 mb-0">© 2026 Vector Videogames</p>
             </div>
         </div>
     </footer>

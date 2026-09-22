@@ -1,3 +1,12 @@
+// main.js - Vector Videogames
+// Aca manejo toda la logica de la pagina: productos, carrito, busqueda, etc.
+
+
+// ============================================================
+// FUNCIONES UTILES
+// ============================================================
+
+// Escapeo caracteres raros para que no metan html malicioso
 const escapeHtml = (value) => String(value)
     .replaceAll('&', '&amp;')
     .replaceAll('<', '&lt;')
@@ -5,19 +14,16 @@ const escapeHtml = (value) => String(value)
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#39;');
 
+// Formateo numeros a pesos chilenos (con punto de miles)
 const formatCLP = (value) => `CLP$ ${Number(value).toLocaleString('es-CL')}`;
 
+// Si el precio es 0 muestro "Gratis", sino el precio normal
 const formatPrice = (value) => {
     if (value === 0) return 'Gratis';
     return formatCLP(value);
 };
 
-const IVA_RATE = 0.19;
-
-const OFFER_ORDER = { weekend: 0, editor: 1, today: 2 };
-const HERO_SIZE = 5;
-const PAGE_SIZE = 10;
-
+// Mezclo un array al azar (algoritmo de Fisher-Yates)
 const shuffle = (items) => {
     const copy = [...items];
     for (let i = copy.length - 1; i > 0; i--) {
@@ -27,6 +33,22 @@ const shuffle = (items) => {
     return copy;
 };
 
+
+// ============================================================
+// CONSTANTES
+// ============================================================
+
+const IVA_RATE = 0.19;
+const OFFER_ORDER = { weekend: 0, editor: 1, today: 2 };
+const HERO_SIZE = 5;
+const PAGE_SIZE = 10;
+
+
+// ============================================================
+// CLASES DE RENDERIZADO
+// ============================================================
+
+// Clase para una tarjeta de producto del catalogo
 class Product {
     constructor(data) {
         this.id = data.id;
@@ -40,6 +62,7 @@ class Product {
         this.stock = data.stock;
     }
 
+    // Devuelve un div con la tarjeta lista para insertar en el DOM
     render() {
         const name = escapeHtml(this.name);
         const description = escapeHtml(this.description);
@@ -52,7 +75,7 @@ class Product {
         col.className = 'col';
         col.innerHTML = `
             <article class="card product-card h-100">
-                <img src="${cover}" class="card-img-top" alt="${name}">
+                <img src="${cover}" class="card-img-top" alt="${name}" onerror="this.style.display='none'">
                 <div class="card-body d-flex flex-column">
                     <h3 class="card-title h5">${name}</h3>
                     <p class="card-text small text-body-secondary">${description}</p>
@@ -72,6 +95,7 @@ class Product {
     }
 }
 
+// Clase para una tarjeta de oferta (se ve distinta a la del catalogo)
 class Deal {
     constructor(data, { featured = false, image = 'hero', extraClass = '' } = {}) {
         this.data = data;
@@ -95,7 +119,7 @@ class Deal {
         const article = document.createElement('article');
         article.className = classes.join(' ');
         article.innerHTML = `
-            <img src="${src}" alt="${name}">
+            <img src="${src}" alt="${name}" onerror="this.style.display='none'">
             <span class="${tagClass}">${label}</span>
             <div class="deal-price">
                 <span class="deal-discount">-${this.data.discount}%</span>
@@ -107,11 +131,18 @@ class Deal {
     }
 }
 
+
+// ============================================================
+// CARRUSEL PRINCIPAL
+// ============================================================
+
+// Muestra productos al azar en el banner de arriba
 class HeroCarousel {
     constructor(products, root) {
         this.root = root;
         this.indicators = root.querySelector('.carousel-indicators');
         this.inner = root.querySelector('.carousel-inner');
+        // Elijo 5 productos al azar para el banner
         this.slides = shuffle(products).slice(0, HERO_SIZE);
         this.render();
     }
@@ -144,6 +175,7 @@ class HeroCarousel {
         this.initCarousel();
     }
 
+    // Crea un punto del carrusel
     indicator(product, index, target) {
         const button = document.createElement('button');
         button.type = 'button';
@@ -157,6 +189,7 @@ class HeroCarousel {
         return button;
     }
 
+    // Crea una diapositiva con imagen y texto
     slide(product, active) {
         const name = escapeHtml(product.name);
         const description = escapeHtml(product.description);
@@ -164,7 +197,7 @@ class HeroCarousel {
         const item = document.createElement('div');
         item.className = active ? 'carousel-item active' : 'carousel-item';
         item.innerHTML = `
-            <img src="${src}" class="d-block w-100" alt="${name}">
+            <img src="${src}" class="d-block w-100" alt="${name}" onerror="this.style.display='none'">
             <div class="carousel-caption">
                 <h5>${name}</h5>
                 <p>${description}</p>
@@ -173,6 +206,7 @@ class HeroCarousel {
         return item;
     }
 
+    // Activo el carrusel de Bootstrap
     initCarousel() {
         const start = () => {
             if (!window.bootstrap?.Carousel) return false;
@@ -187,6 +221,12 @@ class HeroCarousel {
     }
 }
 
+
+// ============================================================
+// CATALOGO CON PAGINACION
+// ============================================================
+
+// Maneja la grilla de productos y los botones de pagina
 class ProductCatalog {
     constructor(products, grid, pagination) {
         this.products = products;
@@ -194,13 +234,18 @@ class ProductCatalog {
         this.pagination = pagination;
         this.list = pagination.querySelector('.pagination');
         this.page = 1;
+
+        // Delegacion de eventos para los clicks en paginacion
         this.list.addEventListener('click', (event) => this.onPageClick(event));
-        // mouseover/out en vez de :hover para que se note el cambio desde JS
+
+        // Efecto hover en las tarjetas (hecho con JS para que se note el cambio)
         this.grid.addEventListener('mouseover', (event) => this.onCardPreview(event, true));
         this.grid.addEventListener('mouseout', (event) => this.onCardPreview(event, false));
+
         this.render();
     }
 
+    // Cambio el borde de la tarjeta cuando el mouse pasa por arriba
     onCardPreview(event, entering) {
         const card = event.target.closest('.product-card');
         if (!card || !this.grid.contains(card)) return;
@@ -213,6 +258,7 @@ class ProductCatalog {
         return Math.max(1, Math.ceil(this.products.length / PAGE_SIZE));
     }
 
+    // Cuando hacen click en un numero de pagina
     onPageClick(event) {
         const target = event.target.closest('[data-page]');
         if (!target) return;
@@ -228,12 +274,35 @@ class ProductCatalog {
     }
 
     render() {
+        // Si no hay productos (ej: busqueda sin resultados) muestro mensaje
+        if (this.products.length === 0) {
+            this.grid.innerHTML = `
+                <div class="error-state col-12">
+                    <div class="error-state__icon" aria-hidden="true">
+                        <i class="bi bi-search"></i>
+                    </div>
+                    <h3 class="error-state__title">No se encontraron productos</h3>
+                    <p class="error-state__text">Intenta con otra busqueda o revisa mas tarde.</p>
+                </div>
+            `;
+            this.pagination.hidden = true;
+            this.list.replaceChildren();
+            return;
+        }
+
         const start = (this.page - 1) * PAGE_SIZE;
         const visible = this.products.slice(start, start + PAGE_SIZE);
         this.grid.replaceChildren(
             ...visible.map((data) => new Product(data).render())
         );
         this.renderPager();
+    }
+
+    // Se usa cuando el buscador filtra los productos
+    setProducts(products) {
+        this.products = products;
+        this.page = 1;
+        this.render();
     }
 
     renderPager() {
@@ -257,6 +326,7 @@ class ProductCatalog {
         this.list.replaceChildren(...items);
     }
 
+    // Crea un boton de pagina (activo, deshabilitado o normal)
     pagerItem(label, page, { disabled = false, active = false } = {}) {
         const item = document.createElement('li');
         item.className = 'page-item';
@@ -284,9 +354,70 @@ class ProductCatalog {
     }
 }
 
+
+// ============================================================
+// BUSCADOR
+// ============================================================
+
+// Filtra productos por nombre cuando el usuario envia el formulario
+class ProductSearch {
+    constructor(allProducts, catalog, form) {
+        this.allProducts = allProducts;
+        this.catalog = catalog;
+        this.form = form;
+        this.input = form.querySelector('input[type="search"]');
+        this.resultsEl = document.querySelector('.search-results');
+
+        this.form.addEventListener('submit', (event) => this.onSubmit(event));
+    }
+
+    onSubmit(event) {
+        event.preventDefault();
+        const query = this.input.value.trim().toLowerCase();
+
+        // Si el campo esta vacio restauro todo el catalogo
+        if (!query) {
+            this.catalog.setProducts(this.allProducts);
+            this.showResults(null);
+            return;
+        }
+
+        // Filtro los productos que contengan el texto buscado
+        const filtered = this.allProducts.filter((product) =>
+            product.name.toLowerCase().includes(query)
+        );
+
+        this.catalog.setProducts(filtered);
+        this.showResults({ query: this.input.value.trim(), count: filtered.length });
+    }
+
+    // Muestro "X resultados para 'tal cosa'" debajo del titulo
+    showResults(info) {
+        if (!this.resultsEl) return;
+        if (!info) {
+            this.resultsEl.hidden = true;
+            this.resultsEl.textContent = '';
+            return;
+        }
+        this.resultsEl.hidden = false;
+        if (info.count === 0) {
+            this.resultsEl.textContent = `No se encontraron resultados para "${info.query}"`;
+        } else {
+            this.resultsEl.textContent = `${info.count} resultado${info.count === 1 ? '' : 's'} para "${info.query}"`;
+        }
+    }
+}
+
+
+// ============================================================
+// OFERTAS
+// ============================================================
+
+// Muestra los productos con descuento en la seccion de ofertas
 class DealsSection {
     constructor(products, grid) {
         this.grid = grid;
+        // Filtro solo los que tienen oferta, los ordeno por tipo y descuento
         this.deals = products
             .filter((product) => product.offer)
             .sort((a, b) => {
@@ -343,8 +474,15 @@ class DealsSection {
     }
 }
 
+
+// ============================================================
+// CARRITO
+// ============================================================
+
+// Maneja el carrito: agregar, quitar, calcular totales, etc.
 class Cart {
     constructor(products, root) {
+        // Guardo los productos en un Map para acceder rapido por ID
         this.catalog = new Map(products.map((product) => [product.id, product]));
         this.lines = new Map();
         this.root = root;
@@ -362,6 +500,7 @@ class Cart {
         this.checkoutMsg = root.querySelector('.cart-checkout-msg');
         this.isOpen = false;
 
+        // Uso delegacion de eventos para no poner un listener en cada boton
         document.addEventListener('click', (event) => this.onClick(event));
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Escape' && this.isOpen) this.close();
@@ -371,6 +510,7 @@ class Cart {
         this.render();
     }
 
+    // Cualquier click en la pagina lo manejo desde aca
     onClick(event) {
         if (event.target.closest('.cart-toggle')) {
             this.togglePanel();
@@ -389,10 +529,11 @@ class Cart {
             return;
         }
 
+        // Si hago click afuera del carrito y esta abierto, lo cierro
         if (this.isOpen && !event.target.closest('.cart-panel')) this.close();
     }
 
-    // Lo justo para la entrega: que no esté vacío y que parezca un correo
+    // Validacion basica del email antes de "pagar"
     onCheckout(event) {
         event.preventDefault();
         if (this.count === 0) return;
@@ -418,6 +559,7 @@ class Cart {
         this.checkoutMsg.classList.toggle('is-error', Boolean(text) && !ok);
     }
 
+    // Agrego un producto al carrito (si hay stock)
     add(productId) {
         const product = this.catalog.get(productId);
         if (!product || product.stock <= 0) return;
@@ -465,7 +607,7 @@ class Cart {
 
     render() {
         const count = this.count;
-        const noun = count === 1 ? 'artículo' : 'artículos';
+        const noun = count === 1 ? 'articulo' : 'articulos';
         this.toggle.setAttribute('aria-label', `Carrito, ${count} ${noun}`);
         this.badge.textContent = String(count);
         this.badge.hidden = count === 0;
@@ -473,7 +615,7 @@ class Cart {
         if (this.lines.size === 0) {
             const empty = document.createElement('p');
             empty.className = 'cart-empty small text-white-50';
-            empty.textContent = 'Tu carrito está vacío';
+            empty.textContent = 'Tu carrito esta vacio';
             this.itemsEl.replaceChildren(empty);
         } else {
             this.itemsEl.replaceChildren(
@@ -500,7 +642,7 @@ class Cart {
         const article = document.createElement('article');
         article.className = 'cart-item d-flex';
         article.innerHTML = `
-            <img class="cart-cover" src="${cover}" alt="${name}">
+            <img class="cart-cover" src="${cover}" alt="${name}" onerror="this.style.display='none'">
             <div class="flex-grow-1 cart-item-copy">
                 <h3 class="h6">${name}</h3>
                 <p class="small text-white-50">Cantidad: ${qty}</p>
@@ -514,8 +656,13 @@ class Cart {
     }
 }
 
-// El catálogo está en products.json para no mezclar data con el DOM.
-// Fetch no anda si abrís el html directo, por eso está el live-server en package.json.
+
+// ============================================================
+// CARGA DE DATOS Y ARRANQUE
+// ============================================================
+
+// Traigo los productos desde el JSON. Sin servidor no funciona
+// por eso hay que usar npm start (live-server)
 const fetchProducts = async () => {
     try {
         const response = await fetch("products.json");
@@ -527,24 +674,36 @@ const fetchProducts = async () => {
         console.error('No pude cargar products.json', err);
         return null;
     }
-}
+};
 
+// Si falla la carga muestro un mensaje amigable con boton de reintentar
 const showCatalogError = () => {
     document.getElementById('inicio')?.setAttribute('hidden', '');
     document.getElementById('ofertas')?.setAttribute('hidden', '');
     const pagination = document.querySelector('#productos .products-pagination');
     if (pagination) pagination.hidden = true;
+    const searchForm = document.querySelector('.search-form');
+    if (searchForm) searchForm.hidden = true;
     const grid = document.querySelector('#productos .products-grid');
     if (!grid) return;
-    const msg = document.createElement('p');
-    msg.className = 'catalog-error';
-    msg.textContent = 'No se pudieron cargar los productos. Prueba con npm start.';
-    grid.replaceChildren(msg);
-}
 
-// Utilizo una función autoejecutable para que 
-// todo el proceso se ejecute de inmediato una 
-// vez cargue la página
+    const wrapper = document.createElement('div');
+    wrapper.className = 'error-state col-12';
+    wrapper.innerHTML = `
+        <div class="error-state__icon" aria-hidden="true">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+        </div>
+        <h3 class="error-state__title">No pudimos cargar los productos</h3>
+        <p class="error-state__text">Parece que hubo un problema de conexion. Revisa tu internet e intentalo de nuevo.</p>
+        <button type="button" class="btn error-state__btn" onclick="location.reload()">
+            <i class="bi bi-arrow-clockwise" aria-hidden="true"></i>
+            Reintentar
+        </button>
+    `;
+    grid.replaceChildren(wrapper);
+};
+
+// Arranco todo cuando carga la pagina
 ( async function () {
     const products = await fetchProducts();
     if (!products?.products) {
@@ -553,18 +712,30 @@ const showCatalogError = () => {
     }
 
     const catalog = products.products;
+
+    // Carrusel principal
     const hero = document.querySelector('#inicio .hero-carousel');
     if (hero) new HeroCarousel(catalog, hero);
 
+    // Seccion de ofertas
     const dealsGrid = document.querySelector('#ofertas .deals-grid');
     if (dealsGrid) new DealsSection(catalog, dealsGrid);
 
+    // Catalogo con paginacion
     const productsContainer = document.querySelector('#productos .products-grid');
     const pagination = document.querySelector('#productos .products-pagination');
+    let productCatalog = null;
     if (productsContainer && pagination) {
-        new ProductCatalog(catalog, productsContainer, pagination);
+        productCatalog = new ProductCatalog(catalog, productsContainer, pagination);
     }
 
+    // Buscador
+    const searchForm = document.querySelector('.search-form');
+    if (searchForm && productCatalog) {
+        new ProductSearch(catalog, productCatalog, searchForm);
+    }
+
+    // Carrito
     const cartRoot = document.querySelector('.header-actions .position-relative');
     if (cartRoot) new Cart(catalog, cartRoot);
 })();
