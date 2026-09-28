@@ -1,5 +1,18 @@
-# vector-videogames
+# Vector Videogames
 
-Tienda estática. El catálogo está en `products.json` y `main.js` lo pide con fetch.
+Tienda eCommerce en **React** (Vite). Catálogo en `src/products.json`.
 
-Si pegara el JSON dentro del JS se mezclaría la data con el comportamiento, así que lo dejé afuera. El tema es que el browser no deja hacer fetch a un archivo local si abrís el html directo (`file://`). Por eso existe `package.json`: **solo** para `npm start` (live-server) y poder leer el json de la misma carpeta. No hay backend ni nada raro.
+## Requisitos de la semana 7
+
+- Listado de productos con nombre, precio normal, precio oferta, descripción corta e imagen
+- Carrito con agregar / eliminar, contador de productos y total
+- Estado con `useState` y renderizado condicional
+
+## Cómo correrlo
+
+```bash
+npm install
+npm start
+```
+
+Abre la URL que muestre Vite (por defecto `http://localhost:5173`).
