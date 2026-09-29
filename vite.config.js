@@ -5,5 +5,5 @@ import react from '@vitejs/plugin-react';
 // En dev local: /
 export default defineConfig(({ command }) => ({
   base: command === 'build' ? '/vector-videogames/' : '/',
-  plugins: [react()],
+  plugins: [react({ jsxRuntime: 'automatic' })],
 }));
