@@ -1,5 +1,6 @@
 import { formatPrice } from '../utils/format.js';
 import { assetUrl } from '../utils/assetUrl.js';
+import { hideBrokenImage } from '../utils/imageFallback.js';
 
 const OFFER_ORDER = { weekend: 0, editor: 1, today: 2 };
 
@@ -18,9 +19,7 @@ function DealCard({ product, featured = false, image = 'hero', extraClass = '' }
       <img
         src={assetUrl(src)}
         alt={product.name}
-        onError={(event) => {
-          event.currentTarget.style.display = 'none';
-        }}
+        onError={hideBrokenImage}
       />
       <span className={tagClass}>{product.offer.label}</span>
       <div className="deal-price">

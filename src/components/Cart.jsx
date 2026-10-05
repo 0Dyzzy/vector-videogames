@@ -1,5 +1,6 @@
 import { formatPrice } from '../utils/format.js';
 import { assetUrl } from '../utils/assetUrl.js';
+import { hideBrokenImage } from '../utils/imageFallback.js';
 
 export default function Cart({ isOpen, lines, count, total, onRemove, onClose }) {
   return (
@@ -24,7 +25,7 @@ export default function Cart({ isOpen, lines, count, total, onRemove, onClose })
 
       {/* Renderizado condicional: vacío vs con productos */}
       {count === 0 ? (
-        <p className="text-white-50 small mb-0">Tu carrito está vacío.</p>
+        <p className="cart-empty small text-white-50 mb-0">Tu carrito está vacío.</p>
       ) : (
         <div className="cart-items">
           {lines.map((line) => (
@@ -33,9 +34,7 @@ export default function Cart({ isOpen, lines, count, total, onRemove, onClose })
                 src={assetUrl(line.images.cover)}
                 alt=""
                 className="cart-cover"
-                onError={(event) => {
-                  event.currentTarget.style.display = 'none';
-                }}
+                onError={hideBrokenImage}
               />
               <div className="cart-item-copy flex-grow-1">
                 <h3 className="h6">{line.name}</h3>

@@ -978,3 +978,40 @@ img:not([src]) {
     margin-bottom: var(--stack-grouped);
     color: var(--vg-muted);
 }
+
+/* Semana 8: botón "En el carrito" y toggle de descripción */
+
+.desc-toggle {
+    align-self: flex-start;
+    margin-top: var(--stack-related);
+    padding: 0;
+    background: none;
+    border: 0;
+    color: var(--vg-accent);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+}
+
+.desc-toggle:hover,
+.desc-toggle:focus-visible {
+    text-decoration: underline;
+}
+
+.product-card .card-text.is-expanded {
+    display: block;
+    -webkit-line-clamp: unset;
+    overflow: visible;
+}
+
+.product-card.is-in-cart {
+    border-color: var(--vg-accent);
+}
+
+.btn-add-cart--added {
+    color: var(--vg-accent);
+    border-color: var(--vg-accent);
+    background-color: color-mix(in srgb, var(--vg-accent) 10%, transparent);
+}
+

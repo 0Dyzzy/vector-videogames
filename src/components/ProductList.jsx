@@ -3,7 +3,7 @@ import ProductCard from './ProductCard.jsx';
 
 const PAGE_SIZE = 10;
 
-export default function ProductList({ products, onAddToCart }) {
+export default function ProductList({ products, onAddToCart, cartProductIds }) {
   const [page, setPage] = useState(1);
   const totalPages = Math.max(1, Math.ceil(products.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
@@ -36,6 +36,7 @@ export default function ProductList({ products, onAddToCart }) {
                 key={product.id}
                 product={product}
                 onAddToCart={onAddToCart}
+                inCart={Boolean(cartProductIds?.has(product.id))}
               />
             ))}
           </div>

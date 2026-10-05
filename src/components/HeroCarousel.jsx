@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { shuffle } from '../utils/shuffle.js';
 import { assetUrl } from '../utils/assetUrl.js';
+import { hideBrokenImage } from '../utils/imageFallback.js';
 
 const HERO_SIZE = 5;
 const AUTO_MS = 5000;
@@ -58,9 +59,7 @@ export default function HeroCarousel({ products }) {
                 src={assetUrl(product.images.hero)}
                 className="d-block w-100"
                 alt={product.name}
-                onError={(event) => {
-                  event.currentTarget.style.display = 'none';
-                }}
+                onError={hideBrokenImage}
               />
               <div className="carousel-caption">
                 <h5>{product.name}</h5>
