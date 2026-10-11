@@ -91,6 +91,11 @@ export default function Header({
                   Productos
                 </a>
               </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#contacto">
+                  Contacto
+                </a>
+              </li>
             </ul>
           </div>
         </div>

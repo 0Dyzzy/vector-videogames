@@ -1,51 +1,32 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import Header from './components/Header.jsx';
 import HeroCarousel from './components/HeroCarousel.jsx';
 import DealsSection from './components/DealsSection.jsx';
 import ProductList from './components/ProductList.jsx';
+import ContactForm from './components/ContactForm.jsx';
 import Cart from './components/Cart.jsx';
 import Footer from './components/Footer.jsx';
+import { categories, games } from './data/games.js';
 
 export default function App() {
-  // Catálogo cargado desde una fuente externa (public/products.json)
-  const [products, setProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // Catálogo de videojuegos: viene de src/data/games.js y vive en el estado
+  const [products, setProducts] = useState(games);
+
+  // Categoría activa del filtro ("Todas" muestra el catálogo completo)
+  const [selectedCategory, setSelectedCategory] = useState('Todas');
 
   // Estado del carrito: array de { id, qty }
   const [cartItems, setCartItems] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  // Efecto de montaje: simula la carga del catálogo desde un JSON externo.
-  // En StrictMode el efecto corre dos veces en dev, por eso limpiamos con
-  // AbortController + clearTimeout para evitar actualizar estado desmontado.
-  useEffect(() => {
-    const controller = new AbortController();
-    const timer = window.setTimeout(async () => {
-      try {
-        const response = await fetch(
-          `${import.meta.env.BASE_URL}products.json`,
-          { signal: controller.signal }
-        );
-        if (!response.ok) {
-          throw new Error(`Error al cargar el catálogo (${response.status})`);
-        }
-        const data = await response.json();
-        setProducts(Array.isArray(data.products) ? data.products : []);
-      } catch (err) {
-        if (err.name !== 'AbortError') {
-          setError('No pudimos cargar los productos. Intenta de nuevo.');
-        }
-      } finally {
-        if (!controller.signal.aborted) setIsLoading(false);
-      }
-    }, 700);
-
-    return () => {
-      window.clearTimeout(timer);
-      controller.abort();
-    };
-  }, []);
+  // Catálogo visible según la categoría elegida
+  const filteredProducts = useMemo(
+    () =>
+      selectedCategory === 'Todas'
+        ? products
+        : products.filter((product) => product.category === selectedCategory),
+    [products, selectedCategory]
+  );
 
   // Índice de productos por id para evitar búsquedas repetidas con find()
   const productById = useMemo(
@@ -131,30 +112,17 @@ export default function App() {
       </Header>
 
       <main id="contenido-principal" tabIndex={-1}>
-        {/* Renderizado condicional: carga, error o catálogo */}
-        {isLoading ? (
-          <section className="section" aria-live="polite">
-            <div className="container-fluid">
-              <p className="text-white-50">Cargando productos…</p>
-            </div>
-          </section>
-        ) : error ? (
-          <section className="section" role="alert">
-            <div className="container-fluid">
-              <p className="text-danger">{error}</p>
-            </div>
-          </section>
-        ) : (
-          <>
-            <HeroCarousel products={products} />
-            <DealsSection products={products} />
-            <ProductList
-              products={products}
-              cartProductIds={cartProductIds}
-              onAddToCart={addToCart}
-            />
-          </>
-        )}
+        <HeroCarousel products={products} />
+        <DealsSection products={products} />
+        <ProductList
+          products={filteredProducts}
+          categories={categories}
+          selectedCategory={selectedCategory}
+          onSelectCategory={setSelectedCategory}
+          cartProductIds={cartProductIds}
+          onAddToCart={addToCart}
+        />
+        <ContactForm />
       </main>
 
       <Footer />

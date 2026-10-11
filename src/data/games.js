@@ -1,0 +1,343 @@
+export const games = [
+  {
+    id: 1,
+    name: "Elden Ring",
+    category: "Rol",
+    description:
+      "RPG de acción y mundo abierto desarrollado por FromSoftware en colaboración con George R. R. Martin, ambientado en las Tierras Intermedias.",
+    images: {
+      cover: "assets/img/products/1-cover.jpg",
+      hero: "assets/img/products/1-hero.jpg",
+    },
+    price: 56990,
+    originalPrice: null,
+    discount: 0,
+    offer: null,
+    stock: 35,
+  },
+  {
+    id: 2,
+    name: "The Witcher 3: Wild Hunt",
+    category: "Rol",
+    description:
+      "RPG narrativo de mundo abierto donde Geralt de Rivia busca a su hija adoptiva en un continente devastado por la guerra.",
+    images: {
+      cover: "assets/img/products/2-cover.jpg",
+      hero: "assets/img/products/2-hero.jpg",
+    },
+    price: 37990,
+    originalPrice: null,
+    discount: 0,
+    offer: null,
+    stock: 50,
+  },
+  {
+    id: 3,
+    name: "Red Dead Redemption 2",
+    category: "Aventura",
+    description:
+      "Aventura de acción de mundo abierto ambientada en el ocaso del salvaje oeste estadounidense, siguiendo la banda de forajidos de Arthur Morgan.",
+    images: {
+      cover: "assets/img/products/3-cover.jpg",
+      hero: "assets/img/products/3-hero.jpg",
+    },
+    price: 47490,
+    originalPrice: null,
+    discount: 0,
+    offer: null,
+    stock: 40,
+  },
+  {
+    id: 4,
+    name: "Cyberpunk 2077",
+    category: "Rol",
+    description:
+      "RPG de acción en primera persona ambientado en Night City, una megalópolis obsesionada con el poder, el glamur y la modificación corporal.",
+    images: {
+      cover: "assets/img/products/4-cover.jpg",
+      hero: "assets/img/products/4-hero.jpg",
+    },
+    price: 7977,
+    originalPrice: 28490,
+    discount: 72,
+    offer: {
+      type: "weekend",
+      label: "OFERTA DE ENTRE SEMANA",
+    },
+    stock: 45,
+  },
+  {
+    id: 5,
+    name: "Grand Theft Auto V",
+    category: "Acción",
+    description:
+      "Acción de mundo abierto en Los Santos, siguiendo a tres criminales distintos unidos por eventos que ponen en riesgo todo lo que poseen.",
+    images: {
+      cover: "assets/img/products/5-cover.jpg",
+      hero: "assets/img/products/5-hero.jpg",
+    },
+    price: 28490,
+    originalPrice: null,
+    discount: 0,
+    offer: null,
+    stock: 60,
+  },
+  {
+    id: 6,
+    name: "Hollow Knight",
+    category: "Indie",
+    description:
+      "Metroidvania dibujado a mano ambientado en el vasto e interconectado reino subterráneo de insectos de Hallownest.",
+    images: {
+      cover: "assets/img/products/6-cover.jpg",
+      hero: "assets/img/products/6-hero.jpg",
+    },
+    price: 4272,
+    originalPrice: 14240,
+    discount: 70,
+    offer: {
+      type: "today",
+      label: "OFERTA DE HOY",
+    },
+    stock: 70,
+  },
+  {
+    id: 7,
+    name: "Hades",
+    category: "Indie",
+    description:
+      "Roguelike de acción donde encarnas al Príncipe del Inframundo en su intento de escapar de las garras de su padre, Hades.",
+    images: {
+      cover: "assets/img/products/7-cover.jpg",
+      hero: "assets/img/products/7-hero.jpg",
+    },
+    price: 23740,
+    originalPrice: null,
+    discount: 0,
+    offer: null,
+    stock: 55,
+  },
+  {
+    id: 8,
+    name: "Stardew Valley",
+    category: "Indie",
+    description:
+      "Simulador de vida y granja donde heredas la vieja parcela de tu abuelo y construyes una nueva vida en Pelican Town.",
+    images: {
+      cover: "assets/img/products/8-cover.jpg",
+      hero: "assets/img/products/8-hero.jpg",
+    },
+    price: 14240,
+    originalPrice: null,
+    discount: 0,
+    offer: null,
+    stock: 65,
+  },
+  {
+    id: 9,
+    name: "Dark Souls III",
+    category: "Rol",
+    description:
+      "RPG de acción exigente de FromSoftware ambientado en el reino en decadencia de Lothric, cerrando la trilogía Dark Souls.",
+    images: {
+      cover: "assets/img/products/9-cover.jpg",
+      hero: "assets/img/products/9-hero.jpg",
+    },
+    price: 22794,
+    originalPrice: 37990,
+    discount: 40,
+    offer: {
+      type: "editor",
+      label: "OFERTAS DEL EDITOR",
+    },
+    stock: 30,
+  },
+  {
+    id: 10,
+    name: "Sekiro: Shadows Die Twice",
+    category: "Acción",
+    description:
+      "Acción y sigilo en el Japón del período Sengoku, donde un shinobi mutilado busca venganza y a su joven señor secuestrado.",
+    images: {
+      cover: "assets/img/products/10-cover.jpg",
+      hero: "assets/img/products/10-hero.jpg",
+    },
+    price: 37990,
+    originalPrice: null,
+    discount: 0,
+    offer: null,
+    stock: 28,
+  },
+  {
+    id: 11,
+    name: "Baldur's Gate 3",
+    category: "Rol",
+    description:
+      "RPG por turnos ambientado en el universo de Dungeons & Dragons, donde tus decisiones definen una historia de compañerismo y traición.",
+    images: {
+      cover: "assets/img/products/11-cover.jpg",
+      hero: "assets/img/products/11-hero.jpg",
+    },
+    price: 56990,
+    originalPrice: null,
+    discount: 0,
+    offer: null,
+    stock: 42,
+  },
+  {
+    id: 12,
+    name: "Portal 2",
+    category: "Aventura",
+    description:
+      "Puzle en primera persona con el Portal Gun, secuela del clásico de Valve que expande la historia de Aperture Science.",
+    images: {
+      cover: "assets/img/products/12-cover.jpg",
+      hero: "assets/img/products/12-hero.jpg",
+    },
+    price: 9490,
+    originalPrice: null,
+    discount: 0,
+    offer: null,
+    stock: 80,
+  },
+  {
+    id: 13,
+    name: "Half-Life: Alyx",
+    category: "Disparos",
+    description:
+      "Shooter de realidad virtual desarrollado por Valve, ambientado entre los eventos de Half-Life y Half-Life 2.",
+    images: {
+      cover: "assets/img/products/13-cover.jpg",
+      hero: "assets/img/products/13-hero.jpg",
+    },
+    price: 56990,
+    originalPrice: null,
+    discount: 0,
+    offer: null,
+    stock: 20,
+  },
+  {
+    id: 14,
+    name: "Counter-Strike 2",
+    category: "Disparos",
+    description:
+      "Shooter táctico competitivo por equipos, la evolución del icónico Counter-Strike sobre el motor Source 2.",
+    images: {
+      cover: "assets/img/products/14-cover.jpg",
+      hero: "assets/img/products/14-hero.jpg",
+    },
+    price: 0,
+    originalPrice: null,
+    discount: 0,
+    offer: null,
+    stock: 100,
+  },
+  {
+    id: 15,
+    name: "Terraria",
+    category: "Indie",
+    description:
+      "Aventura sandbox 2D de exploración, construcción y combate en un mundo generado proceduralmente.",
+    images: {
+      cover: "assets/img/products/15-cover.jpg",
+      hero: "assets/img/products/15-hero.jpg",
+    },
+    price: 9490,
+    originalPrice: null,
+    discount: 0,
+    offer: null,
+    stock: 75,
+  },
+  {
+    id: 16,
+    name: "Among Us",
+    category: "Cooperativo",
+    description:
+      "Juego social multijugador de deducción donde tripulantes deben encontrar al impostor antes de que sabotee la nave.",
+    images: {
+      cover: "assets/img/products/16-cover.jpg",
+      hero: "assets/img/products/16-hero.jpg",
+    },
+    price: 4740,
+    originalPrice: null,
+    discount: 0,
+    offer: null,
+    stock: 90,
+  },
+  {
+    id: 17,
+    name: "It Takes Two",
+    category: "Cooperativo",
+    description:
+      "Aventura de acción cooperativa exclusiva para dos jugadores sobre una pareja en proceso de divorcio, transformada en muñecos.",
+    images: {
+      cover: "assets/img/products/17-cover.jpg",
+      hero: "assets/img/products/17-hero.jpg",
+    },
+    price: 37990,
+    originalPrice: null,
+    discount: 0,
+    offer: null,
+    stock: 38,
+  },
+  {
+    id: 18,
+    name: "Death Stranding",
+    category: "Aventura",
+    description:
+      "Aventura de acción de Hideo Kojima sobre reconectar una América fracturada, cargando entregas a través de paisajes hostiles.",
+    images: {
+      cover: "assets/img/products/18-cover.jpg",
+      hero: "assets/img/products/18-hero.jpg",
+    },
+    price: 37990,
+    originalPrice: null,
+    discount: 0,
+    offer: null,
+    stock: 25,
+  },
+  {
+    id: 19,
+    name: "Persona 5 Royal",
+    category: "Rol",
+    description:
+      "RPG japonés que sigue a un grupo de estudiantes que se convierten en ladrones fantasma para reformar corazones corruptos.",
+    images: {
+      cover: "assets/img/products/19-cover.jpg",
+      hero: "assets/img/products/19-hero.jpg",
+    },
+    price: 47490,
+    originalPrice: null,
+    discount: 0,
+    offer: null,
+    stock: 33,
+  },
+  {
+    id: 20,
+    name: "Hogwarts Legacy",
+    category: "Rol",
+    description:
+      "RPG de acción y mundo abierto ambientado en el universo de Harry Potter durante el siglo XIX, en los terrenos de Hogwarts.",
+    images: {
+      cover: "assets/img/products/20-cover.jpg",
+      hero: "assets/img/products/20-hero.jpg",
+    },
+    price: 19377,
+    originalPrice: 56990,
+    discount: 66,
+    offer: {
+      type: "today",
+      label: "OFERTA DE HOY",
+    },
+    stock: 48,
+  },
+];
+
+export const categories = [
+  "Rol",
+  "Acción",
+  "Aventura",
+  "Disparos",
+  "Indie",
+  "Cooperativo",
+];

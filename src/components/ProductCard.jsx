@@ -27,6 +27,9 @@ export default function ProductCard({ product, onAddToCart, inCart = false }) {
         />
         <div className="card-body d-flex flex-column">
           <h3 className="card-title h5">{product.name}</h3>
+          {product.category && (
+            <span className="product-category">{product.category}</span>
+          )}
           <p
             className={`card-text small text-body-secondary${
               isExpanded ? ' is-expanded' : ''

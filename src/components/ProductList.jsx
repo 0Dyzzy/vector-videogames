@@ -1,10 +1,24 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProductCard from './ProductCard.jsx';
+import CategoryFilter from './CategoryFilter.jsx';
 
 const PAGE_SIZE = 10;
 
-export default function ProductList({ products, onAddToCart, cartProductIds }) {
+export default function ProductList({
+  products,
+  categories = [],
+  selectedCategory = 'Todas',
+  onSelectCategory,
+  onAddToCart,
+  cartProductIds,
+}) {
   const [page, setPage] = useState(1);
+
+  // Al cambiar de categoría se vuelve a la primera página
+  useEffect(() => {
+    setPage(1);
+  }, [selectedCategory]);
+
   const totalPages = Math.max(1, Math.ceil(products.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
   const start = (currentPage - 1) * PAGE_SIZE;
@@ -26,6 +40,12 @@ export default function ProductList({ products, onAddToCart, cartProductIds }) {
         <h2 id="products-heading" className="h4 section-title">
           Productos
         </h2>
+
+        <CategoryFilter
+          categories={categories}
+          selected={selectedCategory}
+          onSelect={onSelectCategory}
+        />
 
         {products.length === 0 ? (
           <p className="text-white-50">No hay productos disponibles por ahora.</p>

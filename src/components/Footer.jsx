@@ -34,6 +34,11 @@ export default function Footer() {
                 Productos
               </a>
             </li>
+            <li className="nav-item">
+              <a className="nav-link text-white-50" href="#contacto">
+                Contacto
+              </a>
+            </li>
           </ul>
         </div>
         <hr className="footer-divider" />
